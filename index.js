@@ -1,6 +1,14 @@
 const inquirer = require("inquirer");
 const mysql = require("mysql");
 
+const connection = mysql.createConnection({
+    host:"localhost",
+    port: 3306,
+    user: "root",
+    password: "Xiyuan18",
+    database: "employees"
+});
+
 //variable creation
 
 
@@ -88,6 +96,10 @@ function endShit() {
     console.log("done!")
 }
 
+// database connection (uncomment later)
+connection.connect(function(error){
+    if (error) throw error;
+})
 
 //function call outs
 kickOff();
