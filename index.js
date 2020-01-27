@@ -8,13 +8,13 @@ const mysql = require("mysql");
 
 // 1.0 this group of functions makes inquirer prompts and directs to other functions
 // this function gets everything started asks user what they would like to do
-function kickOff () {
+function kickOff() {
     console.log("Welcome to the Employee Management System");
     inquirer.prompt({
         type: "list",
-        message:"What do you hope to achieve today?",
+        message: "What do you hope to achieve today?",
         name: "choice",
-        choices:[
+        choices: [
             "Add Department",
             "Add Role",
             "Add Employee",
@@ -24,7 +24,7 @@ function kickOff () {
             "Update Employee Role",
             "Exit"
         ]
-    }).then(function(response){
+    }).then(function (response) {
         var choice = response.choice;
         switch (choice) {
             case "Add Department":
@@ -54,37 +54,38 @@ function kickOff () {
     })
 }
 
-function addDepartment (){
-
+function addDepartment() {
+    console.log("Add Department");
 }
 
-function addRole (){
-
+function addRole() {   
+    console.log("Add role");
 }
 
 function addEmployee() {
-
+    console.log("Add Employee");
 }
 
-function viewDepartments () {
-
+function viewDepartments() {
+    console.log("View Departments");
 }
 
-function viewRoles () {
-
+function viewRoles() {
+    console.log("View Roles");
 }
 
 
-function viewEmployees () {
-
+function viewEmployees() {
+    console.log("View Employees");
 }
 
 function updateRole() {
-
+    console.log("Update Role");
 }
 
-function endShit(){
+function endShit() {
     //This will likely not last, just filler for the moment while i work
+    console.log("done!")
 }
 
 
