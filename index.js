@@ -137,13 +137,13 @@ function addEmployee() {
     connection.query("SELECT * FROM employee", function (error, response) {
         if (error) throw error;
         for (const item of response) {
-            employeeList.push(item.name);
+            employeeList.push(item.first_name + " " + item.last_name);
             employeeObjects = response;
         }
-        connection.query("SELECT * FROM employee", function (error, response) {
+        connection.query("SELECT * FROM role", function (error, response) {
             if (error) throw error;
             for (const item of response) {
-                roleList.push(item.name);
+                roleList.push(item.title);
                 roleObjects = response;
             }
             inquirer.prompt([
@@ -172,11 +172,11 @@ function addEmployee() {
             ]).then(function (response) {
                 let managerId;
                 let roleId;
-                if (manager === "none") {
+                if (response.manager === "none") {
                     managerId = null;
                 } else {
                     for (const item of employeeObjects) {
-                        if (item.name === response.manager) {
+                        if ((item.first_name + " " + item.last_name) === response.manager) {
                             managerId = item.id;
                         };
                     };
@@ -189,7 +189,7 @@ function addEmployee() {
                 connection.query(
                     "INSERT INTO employee SET ?",
                     {
-                        first_name: response.fistName,
+                        first_name: response.firstName,
                         last_name: response.lastName,
                         role_id: roleId,
                         manager_id: managerId
