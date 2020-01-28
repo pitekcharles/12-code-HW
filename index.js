@@ -57,7 +57,7 @@ function kickOff() {
                 updateRole();
                 break;
             case "Exit":
-                endShit();
+                connection.end();
         }
     })
 }
@@ -74,6 +74,7 @@ function addDepartment() {
         var queryString = `INSERT INTO department (name) VALUES (?)`;
         var query = connection.query(queryString, response.newDepartment, function(error, response){
             if (error) throw error;
+            kickOff();
         });
     });
 };
