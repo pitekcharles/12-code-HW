@@ -80,8 +80,53 @@ function addDepartment() {
 };
 
 function addRole() {   
-    console.log("Add role");
-}
+    // console.log("Add role");
+    let departmentList = [];
+    connection.query("SELECT * FROM department", function(error, response){
+        if (error) throw error;
+        for (const item of response) {
+            departmentList.push(response.name);
+            const departmentObjects = response;
+        }
+        inquirer.prompt([
+            {
+                type: "input",
+                message: "What is the new role that you would like to add?",
+                name: "newRole"
+            },
+            {
+                type: "input",
+                message: "What is the Salary of the new role?",
+                name: "salary"
+            },
+            {
+                type: "list",
+                message: "What department is this role a part of?",
+                name: "department",
+                choices: departmentList
+            }
+        ]).then(function(response){
+            let departmentId;
+            for (const item of departmentObjects) {
+                if (item.name === response.department) {
+                    departmentId = item.id;
+                };
+            };
+            connection.query(
+                "INSERT INTO role SET ?",
+                {
+                    title: response.newRole,
+                    salary: response.salary,
+                    department_id: departmentId
+                },
+                function(error, response){
+                    if (error) throw error;
+                    kickOff();
+                }
+            );
+        });
+    });
+};
 
 function addEmployee() {
     console.log("Add Employee");
