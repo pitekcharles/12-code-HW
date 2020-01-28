@@ -3,7 +3,7 @@ const mysql = require("mysql");
 const cTable = require("console.table");
 
 const connection = mysql.createConnection({
-    host:"localhost",
+    host: "localhost",
     port: 3306,
     user: "root",
     password: "Xiyuan18",
@@ -70,19 +70,19 @@ function addDepartment() {
             message: "What is the new departments name?",
             name: "newDepartment"
         }
-    ]).then(function(response){
+    ]).then(function (response) {
         var queryString = `INSERT INTO department (name) VALUES (?)`;
-        var query = connection.query(queryString, response.newDepartment, function(error, response){
+        var query = connection.query(queryString, response.newDepartment, function (error, response) {
             if (error) throw error;
             kickOff();
         });
     });
 };
 
-function addRole() {   
+function addRole() {
     const departmentList = [];
     let departmentObjects;
-    connection.query("SELECT * FROM department", function(error, response){
+    connection.query("SELECT * FROM department", function (error, response) {
         if (error) throw error;
         for (const item of response) {
             departmentList.push(item.name);
@@ -100,12 +100,12 @@ function addRole() {
                 name: "salary"
             },
             {
-                type: "rawlist",
+                type: "list",
                 message: "What department is this role a part of?",
                 name: "department",
                 choices: departmentList
             }
-        ]).then(function(response){
+        ]).then(function (response) {
             let departmentId;
             for (const item of departmentObjects) {
                 if (item.name === response.department) {
@@ -119,7 +119,7 @@ function addRole() {
                     salary: response.salary,
                     department_id: departmentId
                 },
-                function(error, response){
+                function (error, response) {
                     if (error) throw error;
                     kickOff();
                 }
@@ -130,11 +130,54 @@ function addRole() {
 
 function addEmployee() {
     // console.log("Add Employee");
+    const employeeList = ["none"];
+    const roleList = [];
+    let employeeObjects;
+    let roleObjects;
+    connection.query("SELECT * FROM employee", function (error, response) {
+        if (error) throw error;
+        for (const item of response) {
+            employeeList.push(item.name);
+            employeeObjects = response;
+        }
+        connection.query("SELECT * FROM employee", function (error, response) {
+            if (error) throw error;
+            for (const item of response) {
+                roleList.push(item.name);
+                roleObjects = response;
+            }
+            inquirer.prompt([
+                {
+                    type: "input",
+                    message: "What is the new employees first name?",
+                    name: "firstName"
+                },
+                {
+                    type: "input",
+                    message: "What is the new employees last name?",
+                    name: "lastName"
+                },
+                {
+                    type: "list",
+                    message: "Select the new employees role",
+                    name: "role",
+                    choices: roleList
+                },
+                {
+                    type: "list",
+                    message: "Who is the new employees manager?",
+                    name: "manager",
+                    choices: employeeList
+                }
+            ]).then(function (response) {
 
+            })
+        })
+    })
 }
 
 function viewDepartments() {
-    connection.query("SELECT * FROM department", function(error, response){
+    connection.query("SELECT * FROM department", function (error, response) {
         if (error) throw error;
         console.table(response);
         kickOff();
@@ -142,7 +185,7 @@ function viewDepartments() {
 };
 
 function viewRoles() {
-    connection.query("SELECT * FROM role", function(error, response){
+    connection.query("SELECT * FROM role", function (error, response) {
         if (error) throw error;
         console.table(response);
         kickOff();
@@ -151,7 +194,12 @@ function viewRoles() {
 
 
 function viewEmployees() {
-    console.log("View Employees");
+    // console.log("View Employees");
+    connection.query("SELECT * FROM employee", function (error, response) {
+        if (error) throw error;
+        console.table(response);
+        kickOff();
+    });
 }
 
 function updateRole() {
@@ -159,7 +207,7 @@ function updateRole() {
 }
 
 // database connection (uncomment later)
-connection.connect(function(error){
+connection.connect(function (error) {
     if (error) throw error;
 })
 
