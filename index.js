@@ -10,13 +10,6 @@ const connection = mysql.createConnection({
     database: "employees"
 });
 
-//variable creation
-
-
-//function creation
-
-// 1.0 this group of functions makes inquirer prompts and directs to other functions
-// this function gets everything started asks user what they would like to do
 function kickOff() {
     console.log("Welcome to the Employee Management System");
     inquirer.prompt({
@@ -129,7 +122,6 @@ function addRole() {
 };
 
 function addEmployee() {
-    // console.log("Add Employee");
     const employeeList = ["none"];
     const roleList = [];
     let employeeObjects;
@@ -222,7 +214,6 @@ function viewRoles() {
 
 
 function viewEmployees() {
-    // console.log("View Employees");
     connection.query("SELECT * FROM employee", function (error, response) {
         if (error) throw error;
         console.table(response);
@@ -234,10 +225,8 @@ function updateRole() {
     console.log("Update Role");
 }
 
-// database connection (uncomment later)
 connection.connect(function (error) {
     if (error) throw error;
 })
 
-//function call outs
 kickOff();
