@@ -63,8 +63,20 @@ function kickOff() {
 }
 
 function addDepartment() {
-    console.log("Add Department");
-}
+    // console.log("Add Department");
+    inquirer.prompt([
+        {
+            type: "input",
+            message: "What is the new departments name?",
+            name: "newDepartment"
+        }
+    ]).then(function(response){
+        var queryString = `INSERT INTO department (name) VALUES (?)`;
+        var query = connection.query(queryString, response.newDepartment, function(error, response){
+            if (error) throw error;
+        });
+    });
+};
 
 function addRole() {   
     console.log("Add role");
