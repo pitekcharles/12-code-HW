@@ -1,5 +1,6 @@
 const inquirer = require("inquirer");
 const mysql = require("mysql");
+const cTable = require("console.table");
 
 const connection = mysql.createConnection({
     host:"localhost",
@@ -128,12 +129,18 @@ function addRole() {
 };
 
 function addEmployee() {
-    console.log("Add Employee");
+    // console.log("Add Employee");
+
 }
 
 function viewDepartments() {
-    console.log("View Departments");
-}
+    // console.log("View Departments");
+    connection.query("SELECT * FROM department", function(error, response){
+        if (error) throw error;
+        console.table(response);
+        kickOff();
+    });
+};
 
 function viewRoles() {
     console.log("View Roles");
@@ -146,11 +153,6 @@ function viewEmployees() {
 
 function updateRole() {
     console.log("Update Role");
-}
-
-function endShit() {
-    //This will likely not last, just filler for the moment while i work
-    console.log("done!")
 }
 
 // database connection (uncomment later)
