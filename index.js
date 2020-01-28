@@ -63,7 +63,6 @@ function kickOff() {
 }
 
 function addDepartment() {
-    // console.log("Add Department");
     inquirer.prompt([
         {
             type: "input",
@@ -80,13 +79,13 @@ function addDepartment() {
 };
 
 function addRole() {   
-    // console.log("Add role");
-    let departmentList = [];
+    const departmentList = [];
+    let departmentObjects;
     connection.query("SELECT * FROM department", function(error, response){
         if (error) throw error;
         for (const item of response) {
-            departmentList.push(response.name);
-            const departmentObjects = response;
+            departmentList.push(item.name);
+            departmentObjects = response;
         }
         inquirer.prompt([
             {
@@ -100,7 +99,7 @@ function addRole() {
                 name: "salary"
             },
             {
-                type: "list",
+                type: "rawlist",
                 message: "What department is this role a part of?",
                 name: "department",
                 choices: departmentList
