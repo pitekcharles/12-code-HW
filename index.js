@@ -134,7 +134,6 @@ function addEmployee() {
 }
 
 function viewDepartments() {
-    // console.log("View Departments");
     connection.query("SELECT * FROM department", function(error, response){
         if (error) throw error;
         console.table(response);
@@ -143,8 +142,12 @@ function viewDepartments() {
 };
 
 function viewRoles() {
-    console.log("View Roles");
-}
+    connection.query("SELECT * FROM role", function(error, response){
+        if (error) throw error;
+        console.table(response);
+        kickOff();
+    });
+};
 
 
 function viewEmployees() {
