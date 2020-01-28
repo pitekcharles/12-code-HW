@@ -221,9 +221,72 @@ function viewEmployees() {
     });
 }
 
+// current work in progress
 function updateRole() {
-    console.log("Update Role");
-}
+    // console.log("Update Role");
+    var employeeList = ["none"];
+    var employeeObjects;
+    const roleList = [];
+    let roleObjects;
+    connection.query("SELECT * FROM employee", function (error, response) {
+        if (error) throw error;
+        for (const item of response) {
+            employeeList.push(item.first_name + " " + item.last_name);
+            employeeObjects = response;
+        }
+        connection.query("SELECT * FROM role", function (error, response) {
+            if (error) throw error;
+            for (const item of response) {
+                roleList.push(item.title);
+                roleObjects = response;
+            }
+        })
+        inquirer.prompt([
+            {
+                type: "list",
+                message: "Which employee would you like to change roles?",
+                name: "employee",
+                choices: employeeList
+            },
+            {
+                type: "list",
+                message: "What would you like to make their new role?",
+                name: "newRole",
+                choices: roleList
+            }
+        ]).then(function(response){
+            let employeeId;
+            let roleId;
+            if (response.employee === "none") {
+                kickOff();
+            } else {
+                for (const item of employeeObjects) {
+                    if ((item.first_name + " " + item.last_name) === response.employee) {
+                        employeeId = item.id;
+                    };
+                };
+            };
+            for (const item of roleObjects) {
+                if ((item.title) === response.newRole) {
+                    roleId = item.id;
+                };
+            };
+            connection.query("UPDATE employee SET ? WHERE ?",
+            [
+                {
+                    role_id : roleId
+                },
+                {
+                    id: employeeId
+                }
+            ],
+            function(error, response){
+                if (error) throw error;
+                kickOff();
+            });
+        });
+    });
+};
 
 connection.connect(function (error) {
     if (error) throw error;
