@@ -170,11 +170,39 @@ function addEmployee() {
                     choices: employeeList
                 }
             ]).then(function (response) {
-
-            })
-        })
-    })
-}
+                let managerId;
+                let roleId;
+                if (manager === "none") {
+                    managerId = null;
+                } else {
+                    for (const item of employeeObjects) {
+                        if (item.name === response.manager) {
+                            managerId = item.id;
+                        };
+                    };
+                };
+                for (const item of roleObjects) {
+                    if (item.title === response.role) {
+                        roleId = item.id;
+                    };
+                };
+                connection.query(
+                    "INSERT INTO employee SET ?",
+                    {
+                        first_name: response.fistName,
+                        last_name: response.lastName,
+                        role_id: roleId,
+                        manager_id: managerId
+                    },
+                    function (error, response) {
+                        if (error) throw error;
+                        kickOff();
+                    }
+                );
+            });
+        });
+    });
+};
 
 function viewDepartments() {
     connection.query("SELECT * FROM department", function (error, response) {
